@@ -1,0 +1,39 @@
+spring:
+  application:
+    name: meat
+  
+  datasource:
+    url: jdbc:postgresql://localhost:5432/meat_market_db
+    username: meat_admin
+    password: Xaero891500
+    driver-class-name: org.postgresql.Driver
+  
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        default_schema: meat_shop
+        format_sql: true
+        show_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+
+    springdoc:
+      api-docs:
+        path: /api-docs
+      swagger-ui:
+        path: /swagger-ui.html
+        operations-sorter: method
+        tags-sorter: alpha
+        try-it-out-enabled: true
+        filter: true
+      show-actuator: false
+
+server:
+  port: 8080
+
+logging:
+  level:
+    org.hibernate: DEBUG
+    org.springframework: INFO
