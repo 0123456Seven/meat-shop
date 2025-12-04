@@ -1,43 +1,42 @@
 package ru.xaero.meat.core.db.model;
 
 import jakarta.persistence.*;
-import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
-
+import lombok.Data;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "admin_users")
 @Data
+@Entity
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@Table(name = "admin_users")
 public class AdminUser {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "username", unique = true, nullable = false, length = 50)
+    @Column(nullable = false, unique = true)
     private String username;
 
-    @Column(name = "email", unique = true, nullable = false, length = 100)
+    @Column(nullable = false, unique = true)
     private String email;
 
-    @Column(name = "password_hash", nullable = false, length = 255)
+    @Column(name = "password_hash", nullable = false)
     private String passwordHash;
 
-    @Column(name = "full_name", length = 255)
+    @Column(name = "full_name")
     private String fullName;
 
-    @Column(name = "role", length = 50)
-    private String role = "ADMIN";
+    private String role;
 
     @Column(name = "is_active")
+    @Builder.Default
     private Boolean isActive = true;
 
-    @CreationTimestamp
-    @Column(name = "created_at", updatable = false)
+    @Column(name = "created_at")
     private LocalDateTime createdAt;
 
     @Column(name = "last_login")

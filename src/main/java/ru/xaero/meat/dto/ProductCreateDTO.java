@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
 
@@ -46,4 +47,6 @@ public class ProductCreateDTO {
 
     @DecimalMin(value = "0.001", message = "Вес должен быть больше 0")
     private BigDecimal weight;
+
+    private MultipartFile imageFile;
 }

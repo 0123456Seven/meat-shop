@@ -2,16 +2,6 @@ spring:
   application:
     name: meat
 
-  servlet:
-    multipart:
-      max-file-size: 10MB
-      max-request-size: 10MB
-
-  app:
-    upload:
-      dir: ./uploads  # Папка для загрузки файлов
-      base-url: http://localhost:8080
-
   datasource:
     # Берем настройки из переменных окружения или используем значения по умолчанию
     url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/meat_market_db}

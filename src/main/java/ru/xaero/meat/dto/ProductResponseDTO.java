@@ -38,4 +38,16 @@ public class ProductResponseDTO {
         }
         return 0;
     }
+
+    public String getFullImageUrl() {
+        if (imageUrl == null || imageUrl.isEmpty()) {
+            return null;
+        }
+        // Если это уже полный URL, возвращаем как есть
+        if (imageUrl.startsWith("http")) {
+            return imageUrl;
+        }
+        // Иначе добавляем базовый URL
+        return "http://localhost:8080" + imageUrl;
+    }
 }

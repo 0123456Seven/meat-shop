@@ -1,0 +1,28 @@
+# Системные файлы
+.git
+.gitignore
+.DS_Store
+*.log
+
+# Идея/IntelliJ
+.idea
+*.iml
+
+# Maven
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+
+# Локальные настройки
+*.properties
+*.yml.local
+
+# Временные файлы
+temp/
+tmp/
+
+# Логи
+logs/
