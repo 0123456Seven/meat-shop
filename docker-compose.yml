@@ -12,7 +12,7 @@ services:
       - "5433:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql  # ВАЖНО!
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U meat_admin -d meat_market_db"]
       interval: 10s
@@ -31,8 +31,11 @@ services:
       SPRING_DATASOURCE_PASSWORD: Xaero891500
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
       SPRING_JPA_SHOW_SQL: "true"
+      APP_UPLOAD_DIR: /app/uploads  # Добавьте эту переменную
     ports:
       - "8080:8080"
+    volumes:
+      - ./uploads:/app/uploads  # Добавьте volume для сохранения загруженных файлов
 
 volumes:
   postgres_data:

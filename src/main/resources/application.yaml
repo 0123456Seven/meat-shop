@@ -7,13 +7,7 @@ spring:
       max-file-size: 10MB
       max-request-size: 10MB
 
-  app:
-    upload:
-      dir: ./uploads  # Папка для загрузки файлов
-      base-url: http://localhost:8080
-
   datasource:
-    # Берем настройки из переменных окружения или используем значения по умолчанию
     url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/meat_market_db}
     username: ${SPRING_DATASOURCE_USERNAME:meat_admin}
     password: ${SPRING_DATASOURCE_PASSWORD:Xaero891500}
@@ -21,15 +15,20 @@ spring:
 
   jpa:
     hibernate:
-      # Обновляем схему БД при изменениях (create - пересоздает каждый раз)
       ddl-auto: ${SPRING_JPA_HIBERNATE_DDL_AUTO:update}
     properties:
       hibernate:
         default_schema: meat_shop
-        format_sql: true    # Красиво форматирует SQL в логах
-        show_sql: true      # Показывает SQL запросы в консоли
+        format_sql: true
+        show_sql: true
         dialect: org.hibernate.dialect.PostgreSQLDialect
     show-sql: true
+
+# ЭТУ ЧАСТЬ ПЕРЕМЕСТИТЕ ВНЕ БЛОКА spring:
+app:
+  upload:
+    dir: ${APP_UPLOAD_DIR:./uploads}
+    base-url: http://localhost:8080
 
 springdoc:
   api-docs:
@@ -51,4 +50,4 @@ logging:
     org.springframework: INFO
     ru.xaero.meat: DEBUG
   file:
-    name: /app/logs/application.log  # Логи будут сохраняться в файл
+    name: /app/logs/application.log

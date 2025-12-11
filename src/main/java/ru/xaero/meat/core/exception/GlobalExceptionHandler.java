@@ -4,7 +4,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
@@ -41,5 +43,25 @@ public class GlobalExceptionHandler {
         response.put("error", "Internal Server Error");
         response.put("message", "Произошла внутренняя ошибка сервера");
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    public ResponseEntity<?> handleMaxSizeException(MaxUploadSizeExceededException exc) {
+        Map<String, Object> response = new HashMap<>();
+        response.put("timestamp", LocalDateTime.now());
+        response.put("message", "Файл слишком большой! Максимальный размер: 10MB");
+        response.put("status", HttpStatus.BAD_REQUEST.value());
+
+        return ResponseEntity.badRequest().body(response);
+    }
+
+    @ExceptionHandler(IOException.class)
+    public ResponseEntity<?> handleIOException(IOException exc) {
+        Map<String, Object> response = new HashMap<>();
+        response.put("timestamp", LocalDateTime.now());
+        response.put("message", "Ошибка при обработке файла: " + exc.getMessage());
+        response.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
+
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
     }
 }
