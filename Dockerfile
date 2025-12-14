@@ -9,7 +9,6 @@ FROM eclipse-temurin:17-jre-alpine
 WORKDIR /app
 COPY --from=builder /app/target/*.jar app.jar
 
-# Создаем директорию для загрузок
 RUN mkdir -p /app/uploads
 
 EXPOSE 8080

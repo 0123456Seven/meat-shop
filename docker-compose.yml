@@ -1,20 +1,18 @@
-version: '3.8'
-
 services:
   postgres:
     image: postgres:15-alpine
     container_name: meat-market-db
     environment:
-      POSTGRES_DB: meat_market_db
-      POSTGRES_USER: meat_admin
-      POSTGRES_PASSWORD: Xaero891500
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     ports:
       - "5433:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U meat_admin -d meat_market_db"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -26,16 +24,24 @@ services:
       postgres:
         condition: service_healthy
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/meat_market_db
-      SPRING_DATASOURCE_USERNAME: meat_admin
-      SPRING_DATASOURCE_PASSWORD: Xaero891500
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/${POSTGRES_DB}
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
       SPRING_JPA_SHOW_SQL: "true"
-      APP_UPLOAD_DIR: /app/uploads  # Добавьте эту переменную
+      APP_UPLOAD_DIR: /app/uploads
     ports:
       - "8080:8080"
     volumes:
-      - ./uploads:/app/uploads  # Добавьте volume для сохранения загруженных файлов
+      - ./uploads:/app/uploads
+
+  frontend:
+    build: ./frontend
+    container_name: meat-market-frontend
+    depends_on:
+      - app
+    ports:
+      - "8081:80"
 
 volumes:
   postgres_data:

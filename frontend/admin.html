@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Админ-панель | MeatPremium</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/admin.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="admin-container">
+        <!-- Сайдбар -->
+        <aside class="admin-sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+  <img src="assets/logo.png" alt="" class="logo-image">
+  <span class="logo-text">
+    Башкирские<span class="logo-accent">Деликатесы</span>
+  </span>
+</div>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <ul>
+                    <li>
+                        <a href="#" class="nav-link active" id="productsLink">
+                            <i class="fas fa-box"></i>
+                            <span>Товары</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="../index.html" class="nav-link" target="_blank">
+                            <i class="fas fa-external-link-alt"></i>
+                            <span>На сайт</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="admin-info">
+                    <div class="admin-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="admin-details">
+                        <span class="admin-name" id="adminName">Администратор</span>
+                        <span class="admin-role" id="adminRole">Супер-админ</span>
+                    </div>
+                </div>
+                <button class="btn btn-outline btn-block" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Выйти</span>
+                </button>
+            </div>
+        </aside>
+        
+        <!-- Основной контент -->
+        <main class="admin-main">
+            <!-- Хедер -->
+            <header class="admin-header">
+                <div class="header-left">
+                    <button class="menu-toggle" id="sidebarToggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <h1 class="page-title">Управление товарами</h1>
+                </div>
+                
+                <div class="header-right">
+                    <button class="btn btn-primary" id="addProductBtn">
+                        <i class="fas fa-plus"></i>
+                        <span>Добавить товар</span>
+                    </button>
+                </div>
+            </header>
+            
+            <!-- Контент товаров -->
+            <div class="admin-content">
+                <div class="content-toolbar">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="productSearch" placeholder="Поиск товаров...">
+                    </div>
+                    <div class="filter-controls">
+                        <select id="categoryFilter" class="select-input">
+                            <option value="all">Все категории</option>
+                            <option value="Говядина">Говядина</option>
+                            <option value="Конина">Конина</option>
+                            <option value="Свинина">Свинина</option>
+                            <option value="Птица">Птица</option>
+                            <option value="Деликатесы">Деликатесы</option>
+                        </select>
+                        <button class="btn btn-outline" id="refreshBtn">
+                            <i class="fas fa-redo"></i>
+                            <span>Обновить</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="products-table-container">
+                    <table class="data-table" id="productsTable">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Артикул</th>
+                                <th>Название</th>
+                                <th>Категория</th>
+                                <th>Цена</th>
+                                <th>Количество</th>
+                                <th>Статус</th>
+                                <th>Действия</th>
+                            </tr>
+                        </thead>
+                        <tbody id="productsTableBody">
+                            <tr>
+                                <td colspan="8" style="text-align: center; padding: 3rem;">
+                                    <div class="loading-spinner">
+                                        <div class="spinner"></div>
+                                        <p>Загрузка товаров...</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="table-footer">
+                    <div class="table-info">
+                        <span id="totalProducts">0 товаров</span>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Модальное окно товара -->
+    <div class="modal" id="productModal">
+        <div class="modal-content">
+            <button class="modal-close" id="closeProductModal">
+                <i class="fas fa-times"></i>
+            </button>
+            
+            <div class="modal-header">
+                <h2 id="productModalTitle">Добавить товар</h2>
+            </div>
+            
+            <form class="modal-form" id="productForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="productName">Название товара *</label>
+                        <input type="text" id="productName" name="name" required placeholder="Говяжья вырезка">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="productArticle">Артикул *</label>
+                        <input type="text" id="productArticle" name="article" required placeholder="BEEF-001">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="productCategory">Категория</label>
+                        <select id="productCategory" name="category">
+                            <option value="">Выберите категорию</option>
+                            <option value="Говядина">Говядина</option>
+                            <option value="Конина">Конина</option>
+                            <option value="Свинина">Свинина</option>
+                            <option value="Птица">Птица</option>
+                            <option value="Деликатесы">Деликатесы</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="productPrice">Цена (₽) *</label>
+                        <input type="number" id="productPrice" name="price" min="0" step="0.01" required placeholder="850.00">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="productQuantity">Количество *</label>
+                        <input type="number" id="productQuantity" name="quantity" min="0" required placeholder="50">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="productWeight">Вес (кг)</label>
+                        <input type="number" id="productWeight" name="weight" min="0" step="0.001" placeholder="1.000">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="productDescription">Описание</label>
+                    <textarea id="productDescription" name="description" rows="3" placeholder="Описание товара..."></textarea>
+                </div>
+                
+                <div class="form-row">
+    <div class="form-group">
+        <label for="productImageFile">Загрузить изображение</label>
+        <input type="file" id="productImageFile" accept="image/*" class="file-input">
+        <small class="form-hint">Выберите файл (JPG, PNG, до 5MB)</small>
+        <div id="imagePreview" style="margin-top: 10px; display: none;">
+            <img id="previewImage" style="max-width: 200px; max-height: 150px; border-radius: 4px;">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="productImageUrl">Или ссылка на изображение</label>
+        <input type="url" id="productImageUrl" name="imageUrl" placeholder="http://localhost:8080/uploads/...">
+        <small class="form-hint">Оставьте пустым, если загружаете файл</small>
+    </div>
+</div>
+                
+                <div class="form-checkboxes">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="productOnSale" name="isOnSale">
+                        <span>Товар по акции</span>
+                    </label>
+                    
+                    <div class="sale-price-container" id="salePriceContainer" style="display: none;">
+                        <label for="productSalePrice">Цена по акции (₽)</label>
+                        <input type="number" id="productSalePrice" name="salePrice" min="0" step="0.01" placeholder="750.00">
+                    </div>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" id="cancelProductBtn">Отмена</button>
+                    <button type="submit" class="btn btn-primary" id="saveProductBtn">
+                        <span>Сохранить</span>
+                        <i class="fas fa-save"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Уведомления -->
+    <div class="notifications" id="notifications"></div>
+
+    <!-- Скрипты -->
+    <script src="js/admin.js"></script>
+</body>
+</html>

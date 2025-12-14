@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>БашкирскиеДеликатесы</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- SVG фоновый паттерн -->
+    <div class="background-pattern">
+        <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <pattern id="meatPattern" x="0" y="0" width="100" height="100" patternUnits="userSpaceOnUse">
+                    <path d="M20,50 Q40,30 60,50 T100,50" stroke="rgba(188, 40, 40, 0.05)" fill="none" stroke-width="2"/>
+                    <path d="M0,30 Q20,10 40,30 T80,30" stroke="rgba(139, 0, 0, 0.03)" fill="none" stroke-width="1.5"/>
+                    <circle cx="30" cy="70" r="8" fill="rgba(255, 87, 87, 0.04)"/>
+                    <circle cx="70" cy="20" r="6" fill="rgba(188, 40, 40, 0.03)"/>
+                </pattern>
+                <linearGradient id="redGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#8B0000" stop-opacity="0.1"/>
+                    <stop offset="50%" stop-color="#BC2828" stop-opacity="0.05"/>
+                    <stop offset="100%" stop-color="#FF5757" stop-opacity="0.02"/>
+                </linearGradient>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#meatPattern)"/>
+            <rect width="100%" height="100%" fill="url(#redGradient)"/>
+        </svg>
+    </div>
+
+    <!-- Хедер -->
+    <header class="header">
+        <div class="container">
+            <nav class="navbar">
+                <div class="logo">
+  <img src="assets/logo.png" alt="" class="logo-image">
+  <span class="logo-text">
+    Башкирские<span class="logo-accent">Деликатесы</span>
+  </span>
+</div>
+
+                
+                <ul class="nav-menu">
+                    <li><a href="#home" class="nav-link active">Главная</a></li>
+                    <li><a href="#products" class="nav-link">Каталог</a></li>
+                    <li><a href="#about" class="nav-link">О нас</a></li>
+                    <li><a href="#contacts" class="nav-link">Контакты</a></li>
+                </ul>
+                
+                <div class="nav-actions">
+                    <button class="auth-btn" id="loginBtn">
+                        <i class="fas fa-user"></i>
+                        <span>Войти для администратора</span>
+                    </button>
+                    <button class="menu-toggle" id="menuToggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Герой-секция -->
+    <section class="hero" id="home">
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="hero-title">Премиум <span class="text-gradient">мясные</span> продукты</h1>
+                <p class="hero-subtitle">Эксклюзивный выбор фермерского мяса премиум-класса. Свежесть, качество и непревзойденный вкус.</p>
+                <div class="hero-actions">
+                    <a href="#products" class="btn btn-primary">
+                        <span>Смотреть каталог</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                    <a href="#about" class="btn btn-outline">
+                        <span>Узнать больше</span>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="hero-stats">
+                <div class="stat-item">
+                    <span class="stat-number" data-count="150">20</span>
+                    <span class="stat-label">Видов продукции</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" data-count="5000">1000</span>
+                    <span class="stat-label">Довольных клиентов</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number" data-count="15">1</span>
+                    <span class="stat-label">Год на рынке</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Каталог товаров -->
+    <section class="products-section" id="products">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Наша продукция</h2>
+                <p class="section-subtitle">Отборное мясо от проверенных поставщиков</p>
+            </div>
+            
+            <div class="category-filter">
+                <button class="filter-btn active" data-category="all">Все</button>
+                <button class="filter-btn" data-category="Говядина">Говядина</button>
+                <button class="filter-btn" data-category="Свинина">Свинина</button>
+                <button class="filter-btn" data-category="Конина">Конина</button>
+                <button class="filter-btn" data-category="Птица">Птица</button>
+                <button class="filter-btn" data-category="Деликатесы">Деликатесы</button>
+            </div>
+            
+            <div class="products-grid" id="productsGrid">
+                <!-- Товары будут загружаться через JavaScript -->
+                <div class="loading-spinner">
+                    <div class="spinner"></div>
+                    <p>Загрузка товаров...</p>
+                </div>
+            </div>
+            
+            <div class="section-actions">
+                <button class="btn btn-secondary" id="loadMoreBtn">
+                    <span>Показать еще</span>
+                    <i class="fas fa-plus"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Преимущества -->
+    <section class="features-section">
+        <div class="container">
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-leaf"></i>
+                    </div>
+                    <h3>Экологично</h3>
+                    <p>Натуральное фермерское мясо без гормонов и антибиотиков</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shipping-fast"></i>
+                    </div>
+                    <h3>Быстрая доставка</h3>
+                    <p>Доставляем в вакуумной упаковке в течение 24 часов</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-award"></i>
+                    </div>
+                    <h3>Премиум качество</h3>
+                    <p>Строгий контроль качества на всех этапах производства</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <h3>С заботой</h3>
+                    <p>Индивидуальный подход к каждому клиенту</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- О нас -->
+    <section class="about-section" id="about">
+        <div class="container">
+            <div class="about-content">
+                <div class="about-text">
+                    <h2 class="section-title">О нас</h2>
+                    <p>Мы - семейный бизнес с многолетней историей, специализирующийся на поставках премиального мяса. Наша миссия - предоставить клиентам доступ к самым качественным мясным продуктам.</p>
+                    <p>Работаем напрямую с фермерскими хозяйствами, что гарантирует свежесть и натуральность нашей продукции. Каждый продукт проходит строгий отбор и контроль качества.</p>
+                    <a href="#contacts" class="btn btn-outline">
+                        <span>Связаться с нами</span>
+                        <i class="fas fa-phone"></i>
+                    </a>
+                </div>
+                <div class="about-image">
+                    <div class="image-frame">
+                        <div class="image-placeholder">
+                            <i class="fas fa-drumstick-bite"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Контакты -->
+    <section class="contacts-section" id="contacts">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Контакты</h2>
+                <p class="section-subtitle">Свяжитесь с нами удобным для вас способом</p>
+            </div>
+            
+            <div class="contacts-grid">
+                <div class="contact-card">
+                    <div class="contact-icon">
+                        <i class="fas fa-phone"></i>
+                    </div>
+                    <h3>Телефон</h3>
+                    <p>+7 (962) 546-46-01</p>
+                </div>
+                <div class="contact-card">
+                    <div class="contact-icon">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <h3>Email</h3>
+                    <p>bash.delicatesi@gmail.com</p>
+                </div>
+                <div class="contact-card">
+                    <div class="contact-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <h3>Часы работы</h3>
+                    <p>Пн-Пт: 9:00-21:00<br>Сб-Вс: 10:00-20:00</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Футер -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <div class="logo">
+  <img src="assets/logo.png" alt="" class="logo-image">
+  <span class="logo-text">
+    Башкирские<span class="logo-accent">Деликатесы</span>
+  </span>
+</div>
+
+                    <p class="footer-text">Премиум качество мясных продуктов с 2025 года</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-telegram"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-links">
+                    <h3>Меню</h3>
+                    <ul>
+                        <li><a href="#home">Главная</a></li>
+                        <li><a href="#products">Каталог</a></li>
+                        <li><a href="#about">О нас</a></li>
+                        <li><a href="#contacts">Контакты</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-links">
+                    <h3>Категории</h3>
+                    <ul>
+                        <li><a href="#" data-category="Говядина">Говядина</a></li>
+                        <li><a href="#" data-category="Свинина">Свинина</a></li>
+                        <li><a href="#" data-category="Конина">Конина</a></li>
+                        <li><a href="#" data-category="Птица">Птица</a></li>
+                        <li><a href="#" data-category="Деликатесы">Деликатесы</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-newsletter">
+                    <h3>Подписка</h3>
+                    <p>Подпишитесь на новости и акции</p>
+                    <div class="newsletter-form">
+                        <input type="email" placeholder="Ваш email" class="newsletter-input">
+                        <button class="newsletter-btn">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 БашкирскиеДеликатесы. Все права защищены.</p>
+                <div class="footer-legal">
+                    <a href="#">Политика конфиденциальности</a>
+                    <a href="#">Условия использования</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Модальное окно входа -->
+    <div class="modal auth-modal" id="loginModal">
+  <div class="modal-content auth-content">
+
+    <button class="modal-close" id="closeLoginModal">
+      <i class="fas fa-times"></i>
+    </button>
+
+    <div class="modal-header">
+      <h2>Вход в систему</h2>
+      <p>Введите данные для входа в админ-панель</p>
+    </div>
+
+    <div class="modal-body">
+      <form class="auth-form" id="loginForm">
+
+        <div class="form-group">
+          <label for="username">Имя пользователя</label>
+          <div class="input-with-icon">
+            <i class="fas fa-user"></i>
+            <input type="text" id="username" required placeholder="admin">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Пароль</label>
+          <div class="input-with-icon">
+            <i class="fas fa-lock"></i>
+            <input type="password" id="password" required placeholder="••••••••">
+          </div>
+        </div>
+
+        <button type="submit" class="btn-submit">
+          Войти →
+        </button>
+
+      </form>
+    </div>
+
+  </div>
+</div>
+
+
+    <!-- Уведомления -->
+    <div class="notifications" id="notifications"></div>
+
+    <!-- Скрипты -->
+    <script src="js/script.js"></script>
+</body>
+</html>

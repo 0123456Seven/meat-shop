@@ -74,7 +74,7 @@ public class ProductController {
                     example = "0",
                     required = false
             )
-            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "1") int page,
 
             @Parameter(
                     description = "Количество товаров на странице",
