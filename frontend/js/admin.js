@@ -136,7 +136,7 @@ async function saveProduct(productData) {
 
     const uploadResult = await uploadResponse.json();
 
-    const imageUrl = uploadResult.imageUrl || uploadResult.filePath;
+    const imageUrl = uploadResult.filePath;
     if (imageUrl) {
       await apiRequest(`/products/${currentProductId}`, 'PUT', { ...saved, imageUrl });
     }

@@ -20,7 +20,11 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addMapping("/**")
                 .allowedOriginPatterns(
                         "http://localhost:*",
-                        "http://127.0.0.1:*"
+                        "http://127.0.0.1:*",
+			"https://bash-delicatesi.ru",
+        		"https://www.bash-delicatesi.ru",
+        		"http://bash-delicatesi.ru",
+        		"http://www.bash-delicatesi.ru"
                 )
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")
                 .allowedHeaders("*")

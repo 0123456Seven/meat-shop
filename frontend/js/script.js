@@ -135,6 +135,7 @@ function displayProducts(products) {
     const url = String(product.imageUrl).trim();
     if (!url) return '';
     if (url.startsWith('http')) return url;
+    if (url.startsWith('/uploads/')) return url;
     return `/uploads/${url.replace(/^\/+/, '')}`;
   };
 
@@ -238,6 +239,7 @@ function showProductDetails(product) {
     const url = String(p.imageUrl).trim();
     if (!url) return '';
     if (url.startsWith('http')) return url;
+    if (url.startsWith('/uploads/')) return url;
     return `/uploads/${url.replace(/^\/+/, '')}`;
   };
 
