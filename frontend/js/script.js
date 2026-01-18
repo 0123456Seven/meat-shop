@@ -1,5 +1,57 @@
 const API_BASE_URL = '/api';
 let allProducts = [];
+const CART_KEY = 'cart_v1';
+
+function getCart() {
+  try {
+    const raw = localStorage.getItem(CART_KEY);
+    return raw ? JSON.parse(raw) : { items: {} }; // items: { [productId]: { qty, productSnapshot } }
+  } catch {
+    return { items: {} };
+  }
+}
+
+function saveCart(cart) {
+  localStorage.setItem(CART_KEY, JSON.stringify(cart));
+}
+
+function getCartCount() {
+  const cart = getCart();
+  return Object.values(cart.items).reduce((sum, it) => sum + (Number(it.qty) || 0), 0);
+}
+
+function updateCartBadge() {
+  const el = document.getElementById('cartCount');
+  if (!el) return;
+  el.textContent = String(getCartCount());
+}
+
+function addToCart(product) {
+  const cart = getCart();
+  const id = String(product.id);
+
+  // Если товара ещё нет — добавляем
+  if (!cart.items[id]) {
+    cart.items[id] = {
+      qty: 1,
+      product: {
+        id: product.id,
+        name: product.name,
+        price: product.salePrice || product.price,
+        imageUrl: product.imageUrl || null,
+        weight: product.weight || null,
+        category: product.category || null
+      }
+    };
+  }
+  // ❗ если товар уже есть — НИЧЕГО НЕ ДЕЛАЕМ
+
+  saveCart(cart);
+  updateCartBadge();
+}
+
+
+
 
 function showNotification(message, type = 'success', duration = 3000) {
     let notifications = document.getElementById('notifications');
@@ -194,6 +246,11 @@ function displayProducts(products) {
                 <i class="fas fa-eye"></i>
                 <span>Подробнее</span>
               </button>
+
+              <button class="add-to-cart-btn" data-id="${product.id}" title="Добавить в корзину">
+                <i class="fas fa-cart-plus"></i>
+                <span>В корзину</span>
+              </button>
             </div>
           </div>
         </div>
@@ -214,12 +271,23 @@ function addProductEventListenersOnce() {
   grid.dataset.detailsBound = '1';
 
   grid.addEventListener('click', (e) => {
-    const btn = e.target.closest('.view-details-btn');
-    if (!btn) return;
+    const detailsBtn = e.target.closest('.view-details-btn');
+    if (detailsBtn) {
+      const productId = Number(detailsBtn.dataset.id);
+      const product = allProducts.find(p => p.id === productId);
+      if (product) showProductDetails(product);
+      return;
+    }
 
-    const productId = Number(btn.dataset.id);
-    const product = allProducts.find(p => p.id === productId);
-    if (product) showProductDetails(product);
+    const cartBtn = e.target.closest('.add-to-cart-btn');
+    if (cartBtn) {
+      const productId = Number(cartBtn.dataset.id);
+      const product = allProducts.find(p => p.id === productId);
+      if (!product) return;
+
+      addToCart(product, 1);
+      showNotification('Добавлено в корзину', 'success');
+    }
   });
 }
 
@@ -413,7 +481,7 @@ function initAuth() {
                 updateAuthButton();
 
                 setTimeout(() => {
-                    window.open('admin.html', '_blank');
+                    window.location.href = 'admin.html';
                 }, 500);
 
             } catch (error) {
@@ -434,7 +502,7 @@ function updateAuthButton() {
             <span>${admin?.username || 'Админ'}</span>
         `;
         authBtn.onclick = () => {
-            window.open('admin.html', '_blank');
+            window.location.href = 'admin.html';
         };
     } else {
         authBtn.innerHTML = `
@@ -525,6 +593,23 @@ function initMobileMenu() {
     }
 }
 
+function initCartUI() {
+  updateCartBadge();
+
+  const cartBtn = document.getElementById('cartBtn');
+  if (cartBtn) {
+    cartBtn.addEventListener('click', () => {
+      window.location.href = 'cart.html';
+    });
+  }
+
+  // чтобы бейдж обновлялся, если корзину поменяли в другой вкладке
+  window.addEventListener('storage', (e) => {
+    if (e.key === CART_KEY) updateCartBadge();
+  });
+}
+
+
 document.addEventListener('DOMContentLoaded', () => {
     console.log('Инициализация приложения...');
 
@@ -532,6 +617,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initAuth();
     initSmoothScrolling();
     initMobileMenu();
+    initCartUI();
 
     if (document.getElementById('productsGrid')) {
         initProducts();

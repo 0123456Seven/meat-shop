@@ -1,4 +1,4 @@
-2025-12-03 21:17:41 [restartedMain] INFO  ru.xaero.meat.MeatApplication - Starting MeatApplication using Java 21.0.9 with PID 30632 (/home/marsik/IdeaProjects/meat/target/classes started by marsik in /home/marsik/IdeaProjects/meat)
+    2025-12-03 21:17:41 [restartedMain] INFO  ru.xaero.meat.MeatApplication - Starting MeatApplication using Java 21.0.9 with PID 30632 (/home/marsik/IdeaProjects/meat/target/classes started by marsik in /home/marsik/IdeaProjects/meat)
 2025-12-03 21:17:41 [restartedMain] INFO  ru.xaero.meat.MeatApplication - No active profile set, falling back to 1 default profile: "default"
 2025-12-03 21:17:41 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
 2025-12-03 21:17:41 [restartedMain] INFO  o.s.b.d.e.DevToolsPropertyDefaultsPostProcessor - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'

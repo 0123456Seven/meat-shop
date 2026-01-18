@@ -36,6 +36,25 @@ CREATE TABLE IF NOT EXISTS meat_shop.products (
     updated_at TIMESTAMP
 );
 
+CREATE TABLE IF NOT EXISTS meat_shop.orders (
+                                                id BIGSERIAL PRIMARY KEY,
+                                                status VARCHAR(32) NOT NULL DEFAULT 'NEW',
+    customer_name VARCHAR(255) NOT NULL,
+    customer_phone_number VARCHAR(20) NOT NULL,
+    customer_email VARCHAR(255) NOT NULL,
+
+    -- товары заказа (JSON массив)
+    items TEXT NOT NULL,
+
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );
+
+CREATE INDEX IF NOT EXISTS idx_orders_status ON meat_shop.orders(status);
+CREATE INDEX IF NOT EXISTS idx_orders_created_at ON meat_shop.orders(created_at);
+
+-- Права на новую таблицу (на всякий случай)
+GRANT ALL PRIVILEGES ON TABLE meat_shop.orders TO meat_admin;
+
 -- Создаем первого администратора (пароль: admin123)
 -- Пароль должен быть захеширован с помощью BCrypt
 -- Чтобы получить хеш пароля "admin123": https://www.bcryptcalculator.com/

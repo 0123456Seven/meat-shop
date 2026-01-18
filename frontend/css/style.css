@@ -1376,6 +1376,78 @@ a:hover { text-decoration: none; }
   box-shadow: 0 14px 36px rgba(31,122,77,0.35);
 }
 
+/* ===== Корзина в шапке ===== */
+.cart-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  border: 1px solid rgba(139, 0, 0, 0.15);
+  background: rgba(255, 255, 255, 0.7);
+
+  cursor: pointer;
+  transition: transform .12s ease, box-shadow .12s ease;
+}
+
+.cart-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 22px rgba(0,0,0,.08);
+}
+
+.cart-btn i {
+  font-size: 18px;
+  color: #8B0000;
+}
+
+.cart-count {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+
+  min-width: 22px;
+  height: 22px;
+  padding: 0 6px;
+
+  border-radius: 999px;
+  background: #BC2828;
+  color: #fff;
+
+  font-size: 12px;
+  line-height: 22px;
+  text-align: center;
+  font-weight: 700;
+
+  border: 2px solid #fff;
+}
+
+.add-to-cart-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  padding: 10px 12px;
+  border-radius: 12px;
+
+  border: 1px solid rgba(139, 0, 0, 0.18);
+  background: rgba(139, 0, 0, 0.06);
+  cursor: pointer;
+  transition: transform .12s ease, box-shadow .12s ease;
+}
+
+.add-to-cart-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 22px rgba(0,0,0,.08);
+}
+
+.add-to-cart-btn i {
+  color: #8B0000;
+}
+
+
 
 
 
