@@ -30,6 +30,9 @@ services:
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
       SPRING_JPA_SHOW_SQL: "true"
       APP_UPLOAD_DIR: /app/uploads
+      MAIL_USERNAME: ${MAIL_USERNAME}
+      MAIL_PASSWORD: ${MAIL_PASSWORD}
+      SHOP_NOTIFY_EMAIL: ${SHOP_NOTIFY_EMAIL}
     ports:
       - "8080:8080"
     volumes:
