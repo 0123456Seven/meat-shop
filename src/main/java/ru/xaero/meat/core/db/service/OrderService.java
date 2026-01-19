@@ -2,6 +2,7 @@ package ru.xaero.meat.core.db.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -13,6 +14,7 @@ import ru.xaero.meat.dto.CreateOrderRequestDTO;
 import java.math.BigDecimal;
 import java.util.List;
 
+@Slf4j
 @Service
 public class OrderService {
 
@@ -47,11 +49,18 @@ public class OrderService {
             OrderEntity saved = repo.save(order);
 
             if (emailEnabled) {
-                sendToSeller(saved.getId(), req);
+                try {
+                    sendToSeller(saved.getId(), req);
+                } catch (Exception mailEx) {
+                    log.error("Mail send failed for orderId={}", saved.getId(), mailEx);
+                    // НЕ бросаем дальше — заказ сохранится
+                }
             }
+
 
             return saved.getId();
         } catch (Exception e) {
+            log.error("Не удалось создать заказ. emailEnabled={}, notifyEmail={}", emailEnabled, sellerEmail, e);
             throw new RuntimeException("Не удалось создать заказ", e);
         }
     }

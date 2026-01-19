@@ -1,10 +1,12 @@
 package ru.xaero.meat.core.exception;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.multipart.MaxUploadSizeExceededException;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -12,56 +14,63 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
+@Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(NoSuchElementException.class)
     public ResponseEntity<Map<String, Object>> handleNotFound(NoSuchElementException ex) {
-        Map<String, Object> response = new HashMap<>();
-        response.put("timestamp", LocalDateTime.now());
-        response.put("status", HttpStatus.NOT_FOUND.value());
-        response.put("error", "Not Found");
-        response.put("message", ex.getMessage());
-        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        return build(HttpStatus.NOT_FOUND, "Not Found", ex.getMessage(), ex, false);
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<Map<String, Object>> handleBadRequest(IllegalArgumentException ex) {
-        Map<String, Object> response = new HashMap<>();
-        response.put("timestamp", LocalDateTime.now());
-        response.put("status", HttpStatus.BAD_REQUEST.value());
-        response.put("error", "Bad Request");
-        response.put("message", ex.getMessage());
-        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        return build(HttpStatus.BAD_REQUEST, "Bad Request", ex.getMessage(), ex, false);
+    }
+
+    // чтобы "swagger-ui" / "/" не превращались в 500
+    @ExceptionHandler(NoResourceFoundException.class)
+    public ResponseEntity<Map<String, Object>> handleNoResource(NoResourceFoundException ex) {
+        return build(HttpStatus.NOT_FOUND, "Not Found", "Resource not found", ex, false);
+    }
+
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    public ResponseEntity<Map<String, Object>> handleMaxSizeException(MaxUploadSizeExceededException ex) {
+        return build(HttpStatus.BAD_REQUEST, "Bad Request", "Файл слишком большой! Максимальный размер: 10MB", ex, false);
+    }
+
+    @ExceptionHandler(IOException.class)
+    public ResponseEntity<Map<String, Object>> handleIOException(IOException ex) {
+        return build(HttpStatus.INTERNAL_SERVER_ERROR, "Internal Server Error", "Ошибка при обработке файла", ex, true);
     }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Map<String, Object>> handleGenericException(Exception ex) {
-        Map<String, Object> response = new HashMap<>();
-        response.put("timestamp", LocalDateTime.now());
-        response.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
-        response.put("error", "Internal Server Error");
-        response.put("message", "Произошла внутренняя ошибка сервера");
-        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        // логируем ПОЛНЫЙ stacktrace
+        return build(HttpStatus.INTERNAL_SERVER_ERROR, "Internal Server Error", "Произошла внутренняя ошибка сервера", ex, true);
     }
 
-    @ExceptionHandler(MaxUploadSizeExceededException.class)
-    public ResponseEntity<?> handleMaxSizeException(MaxUploadSizeExceededException exc) {
+    private ResponseEntity<Map<String, Object>> build(
+            HttpStatus status,
+            String error,
+            String message,
+            Exception ex,
+            boolean includeCause
+    ) {
+        log.error("Unhandled exception: {}", ex.getMessage(), ex);
+
         Map<String, Object> response = new HashMap<>();
         response.put("timestamp", LocalDateTime.now());
-        response.put("message", "Файл слишком большой! Максимальный размер: 10MB");
-        response.put("status", HttpStatus.BAD_REQUEST.value());
+        response.put("status", status.value());
+        response.put("error", error);
+        response.put("message", message);
 
-        return ResponseEntity.badRequest().body(response);
-    }
+        if (includeCause) {
+            Throwable root = ex;
+            while (root.getCause() != null && root.getCause() != root) root = root.getCause();
+            response.put("cause", root.getClass().getSimpleName() + ": " + root.getMessage());
+        }
 
-    @ExceptionHandler(IOException.class)
-    public ResponseEntity<?> handleIOException(IOException exc) {
-        Map<String, Object> response = new HashMap<>();
-        response.put("timestamp", LocalDateTime.now());
-        response.put("message", "Ошибка при обработке файла: " + exc.getMessage());
-        response.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
-
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        return new ResponseEntity<>(response, status);
     }
 }
